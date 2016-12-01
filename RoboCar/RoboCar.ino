@@ -23,6 +23,7 @@ void setup() {
   //Run the directions
   forward();
   reverse();
+  stopAll();
 
   //end
   digitalWrite(ENABLE, LOW);
@@ -44,6 +45,13 @@ void reverse() {
   digitalWrite(MOT2A, LOW);
   digitalWrite(MOT2B, HIGH);
   delay(1000);
+}
+
+void stopAll() {
+  digitalWrite(MOT1A, LOW);
+  digitalWrite(MOT1B, LOW);
+  digitalWrite(MOT2A, LOW);
+  digitalWrite(MOT2B, LOW);
 }
 
 void loop() {
