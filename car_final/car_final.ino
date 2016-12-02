@@ -27,6 +27,9 @@ int justStarted = ACTIVE;
 const int leftPhotoPin = A0;
 const int centerPhotoPin = A1;
 const int rightPhotoPin = A2;
+const int frontIRSensor = A4;
+const int leftIRSensor = A3;
+const int rightIRSensor = A5;
 
 //Thresholds
 int blackThreshold = 850;
@@ -40,6 +43,7 @@ const int LEFT = 11;
 const int FORWARD = 12;
 const int STOPPED = 13;
 int state = STOPPED;
+uint8_t bonuscourse = 0;
 
 //Initialization function
 void setup() {
@@ -59,6 +63,10 @@ void setup() {
   //Button pin is input
   pinMode(buttonPin, INPUT);
 }
+
+ 
+  
+  
 
 //Infinite loop called automatically by the Arduino board
 void loop() {
@@ -83,11 +91,16 @@ void loop() {
 //      Serial.println(carStatus, DEC);
 //    }
 //  }
-  
+
+ 
   int left = analogRead(leftPhotoPin);
   int right = analogRead(rightPhotoPin);
   int center = analogRead(centerPhotoPin);
+  int frontIR = analogRead(frontIRSensor);
+  int leftIR = analogRead(leftIRSensor);
+  int rightIR = analogRead(rightIRSensor);
   left = left - 25;
+
     
   Serial.print("Left: ");
   Serial.println(left, DEC);
@@ -95,6 +108,10 @@ void loop() {
   Serial.println(center, DEC);
   Serial.print("Right: ");
   Serial.println(right, DEC);
+
+ bonuscourse = checkIRSensors();
+ 
+ if(bonuscourse = 0){
   if(left < 625 && right < 625) {
       forward();
   } else if(center >= right && center >= left) {
@@ -106,6 +123,10 @@ void loop() {
   } else {
     forward();
   }
+ }
+ 
+ 
+  
 //  //Do stuff only if the car is active
 //  if(carStatus == ACTIVE) {
 //    Serial.println("Active");
@@ -141,6 +162,9 @@ void loop() {
 int computeThreshold(int left, int center, int right) {
   
 }
+
+
+
 
 void turnCounterClockwise()
 {
@@ -272,6 +296,19 @@ void resume(){
  digitalWrite(motor2En, m2EnState);
  digitalWrite(motor2a, m2aState);
  digitalWrite(motor2b, m2bState);
+}
+
+uint8_t checkIRSensors(){
+  //Stop if there is an obstruction within 2 inches of front bumper
+  if(frontIR >= 280){
+    halt();
+    return(1);
+  //Move forward if the car is past obstacle and inside bonus course
+  } else if(frontIR < 150 && bonuscourse = 1){
+    forward();
+    return(1);
+  }
+  return(0);
 }
 
   
