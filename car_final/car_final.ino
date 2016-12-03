@@ -176,7 +176,7 @@ int computeThreshold(int left, int center, int right) {
 
 void turnClockwise()
 {
-  Serial.println("Turning CCW");
+  //Serial.println("Turning CCW");
   //left motor backwards, right motor forward
   digitalWrite(motor1En, HIGH);
   m1EnState= HIGH;
@@ -205,7 +205,7 @@ void turnClockwise()
 }
 
 void turnCounterClockwise(){
-  Serial.println("Turning CW");
+  //Serial.println("Turning CW");
   //left motor forward, right motor backwards
   digitalWrite(motor1En, LOW);
   m1EnState= LOW;
@@ -243,7 +243,7 @@ void halt(){
 
 void forward()
 {
-  Serial.println("Going Forward");
+  //Serial.println("Going Forward");
   //both motors forward
   digitalWrite(motor1En, HIGH);
   m1EnState= HIGH;
@@ -318,6 +318,8 @@ uint8_t checkIRSensors(int frontIR){
     Serial.println("Block removed, moving forward");
     forward();
     delay(3000);
+    halt();
+    delay(5000);
     return(1);
   }
   return(0);
